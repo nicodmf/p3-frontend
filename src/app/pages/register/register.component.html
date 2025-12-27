@@ -2,17 +2,16 @@
   <div class="register-card">
     <div class="register-header">
       <h2 class="title">Créer un compte</h2>
-      <p class="subtitle">Créez votre compte pour commencer</p>
     </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
       <div class="form-group">
-        <label for="email">Adresse email</label>
+        <label for="email">Email</label>
         <input
           id="email"
           type="email"
           formControlName="email"
-          placeholder="votre@email.com"
+          placeholder="Saisissez votre email"
           class="form-input"
           [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
         />
@@ -28,7 +27,7 @@
           id="password"
           type="password"
           formControlName="password"
-          placeholder="Minimum 8 caractères"
+          placeholder="Saisissez votre mot de passe"
           class="form-input"
           [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
         />
@@ -38,18 +37,34 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <label for="confirmPassword">Vérification du mot de passe</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          formControlName="confirmPassword"
+          placeholder="Saisissez le à nouveau"
+          class="form-input"
+          [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+        />
+        <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+          <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">La vérification du mot de passe est requise</span>
+          <span *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">Les mots de passe ne correspondent pas</span>
+        </div>
+      </div>
+
       <div class="alert alert-error" *ngIf="errorMessage">
         {{ errorMessage }}
       </div>
-
-      <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || isLoading">
-        <span class="btn-text">{{ isLoading ? 'Création en cours...' : 'Créer un compte' }}</span>
-      </button>
 
       <p class="register-footer">
         Vous avez déjà un compte ?
         <a routerLink="/login" class="link">Se connecter</a>
       </p>
+
+      <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || isLoading">
+        <span class="btn-text">{{ isLoading ? 'Création en cours...' : 'Créer mon compte' }}</span>
+      </button>
     </form>
   </div>
 </div>
