@@ -1,0 +1,61 @@
+<div class="upload-container">
+  <div class="upload-card">
+    <div class="upload-header">
+      <h2 class="title">Téléverser un fichier</h2>
+    </div>
+
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="upload-form">
+      <div class="form-group">
+        <label for="file">Fichier</label>
+        <input
+          id="file"
+          type="file"
+          (change)="onFileSelected($event)"
+          class="form-input file-input"
+          [class.error]="!selectedFile && uploadForm.get('title')?.touched"
+        />
+        <div class="error-message" *ngIf="!selectedFile && uploadForm.get('title')?.touched">
+          <span>Veuillez sélectionner un fichier</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="title">Titre</label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          placeholder="Saisissez le titre du fichier"
+          class="form-input"
+          [class.error]="uploadForm.get('title')?.invalid && uploadForm.get('title')?.touched"
+        />
+        <div class="error-message" *ngIf="uploadForm.get('title')?.invalid && uploadForm.get('title')?.touched">
+          <span *ngIf="uploadForm.get('title')?.errors?.['required']">Le titre est requis</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description (optionnel)</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          placeholder="Saisissez une description"
+          class="form-input"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="alert alert-error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="alert alert-success" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || !selectedFile || isLoading">
+        <span class="btn-text">{{ isLoading ? 'Upload en cours...' : 'Téléverser' }}</span>
+      </button>
+    </form>
+  </div>
+</div>
