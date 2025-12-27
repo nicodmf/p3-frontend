@@ -1,0 +1,52 @@
+.switch-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.switch-label {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #2C2C2C;
+}
+
+.switch-container {
+  display: flex;
+  gap: 0;
+  border: 1px solid rgba(215, 99, 11, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.switch-option {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(44, 44, 44, 0.6);
+  background: rgba(255, 193, 145, 0.16);
+  border: none;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 193, 145, 0.24);
+  }
+
+  &.selected {
+    background: rgba(231, 122, 110, 1);
+    color: white;
+
+    &:hover {
+      background: rgba(231, 122, 110, 0.9);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

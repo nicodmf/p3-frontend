@@ -1,0 +1,12 @@
+<div *ngIf="isVisible" [class]="'callout callout-' + type">
+  <div class="callout-icon">
+    <app-icon [name]="getIconName()"></app-icon>
+  </div>
+  <div class="callout-content">
+    <div *ngIf="message" class="callout-message">{{ message }}</div>
+    <ng-content></ng-content>
+  </div>
+  <button *ngIf="closable" (click)="close()" class="callout-close" aria-label="Fermer">
+    ×
+  </button>
+</div>

@@ -17,6 +17,16 @@
 }
 
 .logo {
+  .logo-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
   h1 {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-size: 1.75rem;

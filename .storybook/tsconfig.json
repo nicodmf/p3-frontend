@@ -1,0 +1,23 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "allowJs": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "skipLibCheck": true,
+    "strict": false
+  },
+  "include": [
+    "../src/app/components/**/*",
+    "./**/*"
+  ],
+  "exclude": [
+    "../cypress/**/*",
+    "../src/**/*.spec.ts",
+    "../src/**/*.test.ts",
+    "../e2e/**/*",
+    "../**/*.cy.ts",
+    "../src/**/*.cy.ts"
+  ]
+}

@@ -1,0 +1,37 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls, ArgsTable, Stories, ArgTypes } from '@storybook/blocks';
+import { CalloutComponent } from './callout.component';
+import * as CalloutStories from './callout.stories';
+
+<Meta of={CalloutComponent} />
+
+# Callout Component
+
+<Title>Callout</Title>
+<Subtitle>Component d'affichage de messages avec icônes</Subtitle>
+
+<Description>
+Le composant Callout affiche des messages informatifs avec des icônes Font Awesome. Il supporte 4 types de messages : info, success, warning et error.
+</Description>
+
+<Primary />
+
+## Props
+
+<ArgsTable of={CalloutComponent} />
+
+## Exemples
+
+### Info
+<Story of={CalloutStories.Info} />
+
+### Success
+<Story of={CalloutStories.Success} />
+
+### Warning
+<Story of={CalloutStories.Warning} />
+
+### Error
+<Story of={CalloutStories.Error} />
+
+### Fermable
+<Story of={CalloutStories.Closable} />

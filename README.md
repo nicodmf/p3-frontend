@@ -1,59 +1,133 @@
-# Frontend
+# DataShare - Frontend Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+## Composants UI
 
-## Development server
+Ce projet contient une bibliothèque de composants UI pour l'application DataShare, créée selon les maquettes du fichier `sujet/maquettes/composants.pdf`.
 
-To start a local development server, run:
+### Composants Implémentés
 
-```bash
-ng serve
+#### 1. Header Component
+- **Localisation** : `src/app/components/header/`
+- **Usage** : En-tête de l'application avec logo et bouton de connexion
+- **Storybook** : `Header.stories.ts`
+
+#### 2. Input Component
+- **Localisation** : `src/app/components/input/`
+- **Usage** : Champ de saisie avec label
+- **Props** :
+  - `label` : Label du champ
+  - `type` : Type de l'input (text, password, email, etc.)
+  - `placeholder` : Texte d'aide
+  - `value` : Valeur du champ
+  - `required` : Champ obligatoire
+  - `disabled` : Champ désactivé
+- **Storybook** : `Input.stories.ts` (Default, TextInput, EmailInput, Disabled, Required)
+
+#### 3. Select Component
+- **Localisation** : `src/app/components/select/`
+- **Usage** : Liste déroulante avec options
+- **Props** :
+  - `label` : Label du select
+  - `options` : Tableau d'options `{value: string, label: string}`
+  - `value` : Valeur sélectionnée
+  - `placeholder` : Texte par défaut
+  - `disabled` : Select désactivé
+- **Storybook** : `Select.stories.ts` (Default, WithSelectedValue, Disabled, SimpleOptions)
+
+#### 4. Button Component
+- **Localisation** : `src/app/components/button/`
+- **Usage** : Bouton d'action avec 4 variantes de style
+- **Props** :
+  - `label` : Texte du bouton
+  - `variant` : Style (primary, secondary, tertiary, quaternary)
+    - **primary** : Fond orange transparent (21%), bordure rgba(205, 94, 20, 0.5), texte #BA681F
+    - **secondary** : Fond transparent, bordure rgba(255, 165, 105, 1), texte rgba(226, 127, 41, 1)
+    - **tertiary** : Idem secondary mais bordure transparente
+    - **quaternary** : Fond rgba(44, 44, 44, 1), texte rgba(243, 238, 234, 1)
+  - `size` : Taille (small, medium, large)
+  - `disabled` : Bouton désactivé (couleurs en attente)
+  - `fullWidth` : Pleine largeur
+  - `leftIcon` : Icône à gauche du texte
+  - `rightIcon` : Icône à droite du texte
+- **Storybook** : `Button.stories.ts` (Primary, Secondary, Tertiary, Quaternary, WithLeftIcon, WithRightIcon, WithBothIcons, Small, Large, Disabled, FullWidth)
+
+#### 5. Callout Component
+- **Localisation** : `src/app/components/callout/`
+- **Usage** : Message d'information/notification
+- **Props** :
+  - `type` : Type (info, success, warning, error)
+  - `title` : Titre du message
+  - `message` : Contenu du message
+  - `closable` : Fermable par l'utilisateur
+  - `icon` : Icône personnalisée
+- **Storybook** : `Callout.stories.ts` (Info, Success, Warning, Error, Closable, WithLabelOnly)
+
+#### 6. Switch Component
+- **Localisation** : `src/app/components/switch/`
+- **Usage** : Bouton de filtre/selection multiple
+- **Props** :
+  - `label` : Label du groupe
+  - `options` : Tableau d'options `{value: string, label: string}`
+  - `value` : Option sélectionnée
+  - `disabled` : Switch désactivé
+- **Storybook** : `Switch.stories.ts` (Default, WithSelectedValue, Disabled, SimpleToggle, WithLabel)
+
+### Utilisation des Composants
+
+Tous les composants sont exportés dans `src/app/components/index.ts` :
+
+```typescript
+import { InputComponent, ButtonComponent, SelectComponent } from './components';
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Storybook
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Pour lancer Storybook :
 
 ```bash
-ng generate component component-name
+npm run storybook
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Storybook sera accessible sur http://localhost:6006
+
+Pour builder Storybook :
 
 ```bash
-ng generate --help
+npm run build-storybook
 ```
 
-## Building
+### Structure du Projet
 
-To build the project run:
-
-```bash
-ng build
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── header/           # Composant Header
+│   │   │   ├── header.component.ts
+│   │   │   ├── header.component.html
+│   │   │   ├── header.component.scss
+│   │   │   └── header.stories.ts
+│   │   ├── input/            # Composant Input
+│   │   ├── select/           # Composant Select
+│   │   ├── button/           # Composant Button
+│   │   ├── callout/          # Composant Callout
+│   │   ├── switch/           # Composant Switch
+│   │   └── index.ts          # Export de tous les composants
+│   └── ...
+└── ...
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Scripts Disponibles
 
-## Running unit tests
+- `npm start` - Lance le serveur de développement Angular
+- `npm run storybook` - Lance Storybook sur le port 6006
+- `npm run build-storybook` - Build la version statique de Storybook
+- `npm test` - Lance les tests unitaires
+- `npm run e2e` - Lance les tests E2E (Cypress)
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Technologies
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Angular 19.2.0
+- TypeScript 5.7.2
+- Storybook 8.6.15
+- SCSS pour les styles

@@ -1,0 +1,10 @@
+<button
+  [class]="'btn btn-' + variant + ' btn-' + size"
+  [class.full-width]="fullWidth"
+  [disabled]="disabled"
+  (click)="onClick()"
+>
+  <span *ngIf="leftIcon" class="icon left-icon">{{ leftIcon }}</span>
+  {{ label }}
+  <span *ngIf="rightIcon" class="icon right-icon">{{ rightIcon }}</span>
+</button>

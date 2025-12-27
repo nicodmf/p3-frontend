@@ -1,0 +1,14 @@
+<div class="switch-group">
+  <label *ngIf="label" class="switch-label">{{ label }}</label>
+  <div class="switch-container">
+    <button
+      *ngFor="let option of options"
+      [class.selected]="isSelected(option.value)"
+      [disabled]="disabled"
+      (click)="selectOption(option.value)"
+      class="switch-option"
+    >
+      {{ option.label }}
+    </button>
+  </div>
+</div>
