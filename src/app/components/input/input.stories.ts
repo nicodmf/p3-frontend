@@ -5,7 +5,8 @@ const meta: Meta<InputComponent> = {
   title: 'Components/Input',
   component: InputComponent,
   tags: ['autodocs'],
-  render: (args: InputComponent) => ({
+  render: (args) => ({
+    component: InputComponent,
     props: args,
   }),
 };

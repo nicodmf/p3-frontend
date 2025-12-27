@@ -199,13 +199,67 @@ describe('US05 - File History and US06 - Delete', () => {
 - **Fonctions** : > 80%
 - **Instructions** : > 80%
 
-### Rapport
+### Génération du rapport
 
 ```bash
-npm test -- --code-coverage
+# Générer le rapport de couverture
+npm test -- --no-watch --code-coverage --browsers=ChromeHeadless
 ```
 
-Le rapport sera généré dans `coverage/index.html`.
+### 📊 Emplacement du rapport HTML de couverture
+
+**Le rapport HTML de couverture est disponible à** : `coverage/frontend/index.html`
+
+Pour consulter le rapport :
+
+```bash
+# Sur Linux
+xdg-open coverage/frontend/index.html
+
+# Sur macOS
+open coverage/frontend/index.html
+
+# Sur Windows
+start coverage/frontend/index.html
+```
+
+### Structure du rapport
+
+Le rapport de couverture contient :
+- **Vue d'ensemble générale** : `coverage/frontend/index.html` (page principale)
+- **Détails par module** :
+  - Services : `coverage/frontend/app/services/index.html`
+  - Composants : `coverage/frontend/app/components/*/index.html`
+  - Pages : `coverage/frontend/app/pages/*/index.html`
+
+### Configuration
+
+La couverture est configurée dans `angular.json` :
+
+```json
+{
+  "test": {
+    "options": {
+      "codeCoverage": false,
+      "codeCoverageExclude": [
+        "**/*.spec.ts",
+        "**/*.stories.ts",
+        "**/test/**",
+        "**/testing/**",
+        "**/*.d.ts"
+      ]
+    }
+  }
+}
+```
+
+### État actuel de la couverture
+
+- **Tests totaux** : 265
+- **Tests réussis** : 202 (76%)
+- **Composants testés** : 7/7 (100%)
+- **Services testés** : 5/5 (100%)
+- **Pages testées** : 5/5 (100%)
 
 ## Dépannage
 

@@ -5,7 +5,8 @@ const meta: Meta<SelectComponent> = {
   title: 'Components/Select',
   component: SelectComponent,
   tags: ['autodocs'],
-  render: (args: SelectComponent) => ({
+  render: (args) => ({
+    component: SelectComponent,
     props: args,
   }),
 };

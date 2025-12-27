@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 import { HeaderComponent } from './header.component';
 
 const meta: Meta<HeaderComponent> = {
@@ -12,7 +13,8 @@ const meta: Meta<HeaderComponent> = {
       providers: [provideRouter([])],
     }),
   ],
-  render: (args: HeaderComponent) => ({
+  render: (args) => ({
+    component: HeaderComponent,
     props: args,
   }),
 };
@@ -22,7 +24,7 @@ type Story = StoryObj<HeaderComponent>;
 
 export const NotLoggedIn: Story = {
   args: {
-    isLoggedIn: false,
+    isLoggedIn$: of(false),
   },
   parameters: {
     docs: {
@@ -35,7 +37,7 @@ export const NotLoggedIn: Story = {
 
 export const LoggedIn: Story = {
   args: {
-    isLoggedIn: true,
+    isLoggedIn$: of(true),
   },
   parameters: {
     docs: {

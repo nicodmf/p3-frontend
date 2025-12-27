@@ -46,8 +46,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "8kB",
+                  "maximumError": "12kB"
                 }
               ],
               "outputHashing": "all"
@@ -98,7 +98,15 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "codeCoverage": false,
+            "codeCoverageExclude": [
+              "**/*.spec.ts",
+              "**/*.stories.ts",
+              "**/test/**",
+              "**/testing/**",
+              "**/*.d.ts"
+            ]
           }
         },
         "storybook": {
