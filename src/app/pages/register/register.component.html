@@ -1,18 +1,18 @@
-<div class="auth-wrapper">
-  <div class="auth-card">
-    <div class="auth-header">
-      <h1 class="logo">DataShare</h1>
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h2 class="title">Créer un compte</h2>
       <p class="subtitle">Créez votre compte pour commencer</p>
     </div>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
       <div class="form-group">
         <label for="email">Adresse email</label>
         <input
           id="email"
           type="email"
           formControlName="email"
-          placeholder="exemple@email.com"
+          placeholder="votre@email.com"
           class="form-input"
           [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
         />
@@ -43,12 +43,12 @@
       </div>
 
       <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || isLoading">
-        <span class="btn-text">{{ isLoading ? 'Création en cours...' : 'Créer mon compte' }}</span>
+        <span class="btn-text">{{ isLoading ? 'Création en cours...' : 'Créer un compte' }}</span>
       </button>
 
-      <p class="auth-footer">
+      <p class="register-footer">
         Vous avez déjà un compte ?
-        <a routerLink="/login" class="link">Connectez-vous</a>
+        <a routerLink="/login" class="link">Se connecter</a>
       </p>
     </form>
   </div>
