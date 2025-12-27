@@ -3,7 +3,8 @@
   <select
     [value]="value"
     [disabled]="disabled"
-    (change)="onChange($event)"
+    (change)="onSelectChange($event)"
+    (blur)="onBlur()"
     class="select-field"
   >
     <option value="" disabled selected>{{ placeholder }}</option>
@@ -11,4 +12,5 @@
       {{ option.label }}
     </option>
   </select>
+  <span *ngIf="errorMessage" class="select-error">{{ errorMessage }}</span>
 </div>

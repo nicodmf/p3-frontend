@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { CalloutComponent } from '../../components/callout/callout.component';
+import { ButtonComponent } from '../../components/button/button.component';
+import { InputComponent } from '../../components/input/input.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, CalloutComponent, ButtonComponent, InputComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -37,6 +40,24 @@ export class RegisterComponent {
       return { passwordMismatch: true };
     }
     return null;
+  }
+
+  getErrorMessage(field: string): string {
+    const control = this.registerForm.get(field);
+    if (!control || !control.touched || !control.errors) {
+      return '';
+    }
+
+    if (control.errors['required']) {
+      if (field === 'email') return "L'email est requis";
+      if (field === 'password') return 'Le mot de passe est requis';
+      if (field === 'confirmPassword') return 'La vérification du mot de passe est requise';
+    }
+    if (control.errors['email']) return "Format d'email invalide";
+    if (control.errors['minlength']) return 'Minimum 8 caractères';
+    if (control.errors['passwordMismatch']) return 'Les mots de passe ne correspondent pas';
+
+    return '';
   }
 
   onSubmit(): void {

@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
       height="24"
       fill="none"
       stroke="currentColor"
-      stroke-width="32"
+      [attr.stroke-width]="getStrokeWidth()"
       [attr.stroke-linejoin]="getStrokeLineJoin()"
       [attr.stroke-linecap]="getStrokeLineCap()">
       <ng-container [ngSwitch]="name">
@@ -43,6 +43,11 @@ import { CommonModule } from '@angular/common';
           <circle cx="256" cy="256" r="208"/>
           <polyline points="152,256 216,320 360,176" stroke-linecap="round"/>
         </ng-container>
+
+        <!-- Upload -->
+        <ng-container *ngSwitchCase="'upload'">
+          <path d="M10.6666 9.46502L7.99997 6.79835M7.99997 6.79835L5.33331 9.46502M7.99997 6.79835V12.7983M13.5933 11.0583C14.2435 10.7039 14.7572 10.1429 15.0532 9.4641C15.3492 8.78526 15.4108 8.02717 15.2281 7.30948C15.0454 6.59178 14.629 5.95536 14.0444 5.50065C13.4599 5.04594 12.7405 4.79884 12 4.79835H11.16C10.9582 4.01784 10.5821 3.29324 10.0599 2.67901C9.5378 2.06478 8.8832 1.57692 8.14537 1.25209C7.40754 0.927259 6.60567 0.773922 5.80005 0.803604C4.99443 0.833287 4.20602 1.04522 3.49409 1.42346C2.78216 1.8017 2.16525 2.33642 1.68972 2.9874C1.2142 3.63839 0.892434 4.38871 0.748627 5.18195C0.60482 5.97518 0.64271 6.7907 0.859449 7.56719C1.07619 8.34368 1.46613 9.06093 1.99997 9.66501" stroke="#BA681F"/>
+        </ng-container>
       </ng-container>
     </svg>
   `,
@@ -55,17 +60,25 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class IconComponent {
-  @Input() name: 'circle' | 'octagon' | 'triangle' | 'circle-check' = 'circle';
+  @Input() name: 'circle' | 'octagon' | 'triangle' | 'circle-check' | 'upload' = 'circle';
 
   getViewBox(): string {
-    return this.name === 'triangle' ? '0 0 576 512' : '0 0 512 512';
+    if (this.name === 'triangle') return '0 0 576 512';
+    if (this.name === 'upload') return '0 0 16 14';
+    return '0 0 512 512';
+  }
+
+  getStrokeWidth(): string {
+    return this.name === 'upload' ? '1.6' : '32';
   }
 
   getStrokeLineJoin(): string | null {
+    if (this.name === 'upload') return 'round';
     return (this.name === 'octagon' || this.name === 'triangle') ? 'round' : null;
   }
 
   getStrokeLineCap(): string | null {
+    if (this.name === 'upload') return 'round';
     return this.name === 'circle' ? 'round' : (this.name === 'triangle' ? 'round' : null);
   }
 }

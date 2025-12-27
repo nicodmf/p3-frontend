@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DownloadService } from '../../services/download.service';
+import { CalloutComponent } from '../../components/callout/callout.component';
+import { ButtonComponent } from '../../components/button/button.component';
 
 @Component({
   selector: 'app-download',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CalloutComponent, ButtonComponent],
   templateUrl: './download.component.html',
   styleUrls: ['./download.component.scss']
 })

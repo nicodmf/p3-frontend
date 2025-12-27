@@ -12,6 +12,7 @@ export class ButtonComponent {
   @Input() label: string = 'Bouton';
   @Input() variant: 'primary' | 'secondary' | 'tertiary' | 'quaternary' = 'primary';
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
+  @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() disabled: boolean = false;
   @Input() fullWidth: boolean = false;
   @Input() leftIcon: string = '';

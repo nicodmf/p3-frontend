@@ -3,6 +3,7 @@
   <div class="switch-container">
     <button
       *ngFor="let option of options"
+      type="button"
       [class.selected]="isSelected(option.value)"
       [disabled]="disabled"
       (click)="selectOption(option.value)"
@@ -11,4 +12,5 @@
       {{ option.label }}
     </button>
   </div>
+  <span *ngIf="errorMessage" class="switch-error">{{ errorMessage }}</span>
 </div>

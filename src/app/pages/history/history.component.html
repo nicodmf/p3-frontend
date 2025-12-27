@@ -1,9 +1,23 @@
-<div class="history-container">
-  <div class="history-card">
-    <div class="history-header">
-      <h2 class="title">Historique des fichiers</h2>
-      <p class="subtitle">Consultez vos fichiers téléversés</p>
-    </div>
+<div class="page-layout">
+  <!-- Sidebar -->
+  <app-sidebar
+    [isOpen]="isSidebarOpen"
+    (closeSidebar)="closeSidebar()">
+  </app-sidebar>
+
+  <!-- Overlay pour mobile -->
+  <div class="sidebar-overlay"
+       *ngIf="isSidebarOpen"
+       (click)="closeSidebar()">
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <div class="history-container">
+      <div class="history-card">
+        <div class="history-header">
+          <h2 class="title">Mes fichiers</h2>
+        </div>
 
     <div class="history-content" *ngIf="!isLoading && !errorMessage">
       <div class="files-list" *ngIf="files.length > 0">
@@ -15,31 +29,26 @@
             </svg>
           </div>
           <div class="file-info">
-            <h3 class="file-title">{{ file.title }}</h3>
-            <p class="file-description" *ngIf="file.description">{{ file.description }}</p>
+            <div class="file-header">
+              <h3 class="file-title">{{ file.originalFileName }}</h3>
+              <span class="status-badge" [ngClass]="getStatusBadgeClass(file)">
+                {{ getStatusBadgeText(file) }}
+              </span>
+            </div>
             <div class="file-meta">
-              <span class="file-name">{{ file.fileName }}</span>
               <span class="file-size">{{ formatFileSize(file.fileSize) }}</span>
               <span class="file-date">{{ formatDate(file.createdAt) }}</span>
+              <span class="file-expiration">Expire le {{ formatDate(file.expiresAt) }}</span>
             </div>
           </div>
           <div class="file-actions">
-            <a [routerLink]="['/download', file.id]" class="btn-download">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#FF812D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M7 10L12 15L17 10" stroke="#FF812D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 15V3" stroke="#FF812D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Télécharger
-            </a>
-            <button class="btn-delete" (click)="deleteFile(file.id)">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 6H5H21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19ZM10 11V17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M14 11V17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Supprimer
-            </button>
+            <a [routerLink]="['/download', file.token]" class="btn-download">Télécharger</a>
+            <app-button
+              variant="quaternary"
+              label="Supprimer"
+              size="small"
+              (clicked)="deleteFile(file.token)">
+            </app-button>
           </div>
         </div>
       </div>
@@ -51,7 +60,9 @@
           <path d="M12 3V15" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <p>Aucun fichier téléversé</p>
-        <a routerLink="/upload" class="btn btn-primary">Téléverser un fichier</a>
+        <a routerLink="/upload">
+          <app-button variant="primary" label="Téléverser un fichier"></app-button>
+        </a>
       </div>
     </div>
 
@@ -60,8 +71,15 @@
       <p>Chargement de l'historique...</p>
     </div>
 
-    <div class="alert alert-error" *ngIf="errorMessage">
-      {{ errorMessage }}
+        <app-callout type="error" [message]="errorMessage" *ngIf="errorMessage"></app-callout>
+      </div>
     </div>
+
+    <!-- Floating Action Button (Mobile only) -->
+    <a routerLink="/upload" class="fab">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5V19M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
   </div>
 </div>

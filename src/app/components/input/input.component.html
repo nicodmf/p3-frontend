@@ -3,9 +3,12 @@
   <input
     [type]="type"
     [placeholder]="placeholder"
-    [(ngModel)]="value"
+    [value]="value"
     [required]="required"
     [disabled]="disabled"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
     class="input-field"
   />
+  <span *ngIf="errorMessage" class="input-error">{{ errorMessage }}</span>
 </div>

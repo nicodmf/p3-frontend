@@ -5,48 +5,35 @@
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="Saisissez votre email"
-          class="form-input"
-          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-        />
-        <div class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-          <span *ngIf="loginForm.get('email')?.errors?.['required']">L'email est requis</span>
-          <span *ngIf="loginForm.get('email')?.errors?.['email']">Format d'email invalide</span>
-        </div>
-      </div>
+      <app-input
+        label="Email"
+        type="email"
+        formControlName="email"
+        placeholder="Saisissez votre email"
+        [errorMessage]="getErrorMessage('email')">
+      </app-input>
 
-      <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          placeholder="Saisissez votre mot de passe"
-          class="form-input"
-          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-        />
-        <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-          <span *ngIf="loginForm.get('password')?.errors?.['required']">Le mot de passe est requis</span>
-        </div>
-      </div>
+      <app-input
+        label="Mot de passe"
+        type="password"
+        formControlName="password"
+        placeholder="Saisissez votre mot de passe"
+        [errorMessage]="getErrorMessage('password')">
+      </app-input>
 
-      <div class="alert alert-error" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </div>
+      <app-callout type="error" [message]="errorMessage" *ngIf="errorMessage"></app-callout>
 
       <p class="login-footer">
-        <button type="button" class="link" routerLink="/register">Créer un compte</button>
+        <a routerLink="/register" class="link">Créer un compte</a>
       </p>
 
-      <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid || isLoading">
-        <span class="btn-text">{{ isLoading ? 'Connexion en cours...' : 'Se connecter' }}</span>
-      </button>
+      <app-button
+        type="submit"
+        variant="primary"
+        [label]="isLoading ? 'Connexion en cours...' : 'Se connecter'"
+        [disabled]="loginForm.invalid || isLoading"
+        [fullWidth]="true">
+      </app-button>
     </form>
   </div>
 </div>

@@ -1,34 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HistoryService } from '../../services/history.service';
-
-interface FileHistory {
-  id: string;
-  title: string;
-  description: string;
-  fileName: string;
-  fileSize: number;
-  downloadUrl: string;
-  createdAt: string;
-}
+import { Subscription } from 'rxjs';
+import { HistoryService, FileHistory } from '../../services/history.service';
+import { SidebarService } from '../../services/sidebar.service';
+import { CalloutComponent } from '../../components/callout/callout.component';
+import { ButtonComponent } from '../../components/button/button.component';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CalloutComponent, ButtonComponent, SidebarComponent],
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss']
 })
-export class HistoryComponent implements OnInit {
+export class HistoryComponent implements OnInit, OnDestroy {
   files: FileHistory[] = [];
   isLoading = true;
   errorMessage = '';
+  isSidebarOpen = false;
+  private sidebarSubscription?: Subscription;
 
-  constructor(private historyService: HistoryService) {}
+  constructor(
+    private historyService: HistoryService,
+    private sidebarService: SidebarService
+  ) {}
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.isSidebarOpen = false;
+  }
 
   ngOnInit(): void {
     this.loadHistory();
+
+    // Écouter les événements de toggle de la sidebar depuis le header
+    this.sidebarSubscription = this.sidebarService.toggle$.subscribe(() => {
+      this.toggleSidebar();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.sidebarSubscription) {
+      this.sidebarSubscription.unsubscribe();
+    }
   }
 
   loadHistory(): void {
@@ -66,18 +85,26 @@ export class HistoryComponent implements OnInit {
     });
   }
 
-  deleteFile(id: string): void {
+  deleteFile(token: string): void {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce fichier ?')) {
       return;
     }
 
-    this.historyService.deleteFile(id).subscribe({
+    this.historyService.deleteFile(token).subscribe({
       next: () => {
-        this.files = this.files.filter(file => file.id !== id);
+        this.files = this.files.filter(file => file.token !== token);
       },
       error: (error) => {
         this.errorMessage = error.error?.message || 'Erreur lors de la suppression';
       }
     });
+  }
+
+  getStatusBadgeText(file: FileHistory): string {
+    return file.isActive ? 'Actif' : 'Expiré';
+  }
+
+  getStatusBadgeClass(file: FileHistory): string {
+    return file.isActive ? 'badge-active' : 'badge-expired';
   }
 }

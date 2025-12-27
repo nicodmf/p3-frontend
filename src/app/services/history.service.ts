@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export interface FileHistory {
-  id: string;
-  title: string;
-  description: string;
-  fileName: string;
+  token: string;
+  originalFileName: string;
   fileSize: number;
-  downloadUrl: string;
   createdAt: string;
+  expiresAt: string;
+  isActive: boolean;
+  tags: string[];
+  requiresPassword: boolean;
 }
 
 @Injectable({

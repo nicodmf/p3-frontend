@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface SelectOption {
   value: string;
@@ -11,17 +12,50 @@ export interface SelectOption {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss']
+  styleUrls: ['./select.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectComponent),
+      multi: true
+    }
+  ]
 })
-export class SelectComponent {
+export class SelectComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() options: SelectOption[] = [];
-  @Input() value: string = '';
   @Input() placeholder: string = 'Sélectionnez une option';
-  @Input() disabled: boolean = false;
+  @Input() errorMessage: string = '';
 
-  onChange(event: Event) {
+  value: string = '';
+  disabled: boolean = false;
+
+  private onChange: (value: string) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  writeValue(value: string): void {
+    this.value = value || '';
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  onSelectChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.value = target.value;
+    this.onChange(this.value);
+  }
+
+  onBlur(): void {
+    this.onTouched();
   }
 }

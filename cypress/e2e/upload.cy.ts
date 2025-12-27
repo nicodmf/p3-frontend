@@ -3,42 +3,81 @@ describe('US01 - Upload', () => {
     cy.visit('/upload');
   });
 
-  it('should display upload page with correct elements', () => {
-    cy.get('h2').should('contain', 'Téléverser un fichier');
-    cy.get('.subtitle').should('contain', 'Partagez vos fichiers');
+  it('should display upload page with correct title', () => {
+    cy.get('h2').should('contain', 'Ajouter un fichier');
   });
 
-  it('should display file input and form fields', () => {
-    cy.get('input[type="file"]').should('be.visible');
-    cy.get('#title').should('be.visible');
-    cy.get('#description').should('be.visible');
+  it('should display file selector when no file is selected', () => {
+    cy.get('.file-selector').should('be.visible');
+    cy.get('.file-label').should('contain', 'Fichier');
+    cy.get('.file-button').should('contain', 'Choisir un fichier');
+    cy.get('.file-text').should('contain', 'Aucun fichier choisi');
+  });
+
+  it('should display form fields', () => {
+    cy.get('input[type="password"]').should('exist');
+    cy.get('select').should('exist');
   });
 
   it('should display correct labels and placeholders', () => {
-    cy.get('label[for="title"]').should('contain', 'Titre');
-    cy.get('label[for="description"]').should('contain', 'Description');
+    cy.get('.input-label').contains('Mot de passe').should('be.visible');
+    cy.get('.select-label').contains('Expiration').should('be.visible');
 
-    cy.get('#title').should('have.attr', 'placeholder', 'Titre du fichier');
-    cy.get('#description').should('have.attr', 'placeholder', 'Description optionnelle');
+    cy.get('input[type="password"]').should('have.attr', 'placeholder', 'Optionnel');
+  });
+
+  it('should have default expiration value of 1 day', () => {
+    cy.get('select').should('have.value', '1');
+  });
+
+  it('should display file info when file is selected', () => {
+    cy.get('input[type="file"]').selectFile({
+      contents: Cypress.Buffer.from('test content'),
+      fileName: 'test-image.jpg',
+      mimeType: 'image/jpeg'
+    }, { force: true });
+
+    cy.get('.file-selected').should('be.visible');
+    cy.get('.file-name').should('contain', 'test-image.jpg');
+    cy.get('.file-size').should('exist');
+    cy.get('.change-button').should('contain', 'Changer');
   });
 
   it('should show validation error for missing file', () => {
-    cy.get('#title').type('Test file');
     cy.get('button[type="submit"]').click();
-    cy.get('.error-message').should('be.visible');
+    cy.get('.error-message').should('be.visible').and('contain', 'Veuillez sélectionner un fichier');
   });
 
-  it('should show validation error for missing title', () => {
-    cy.get('button[type="submit"]').click();
-    cy.get('.error-message').should('be.visible');
-  });
-
-  it('should display selected file name after selection', () => {
+  it('should allow changing file', () => {
     cy.get('input[type="file"]').selectFile({
       contents: Cypress.Buffer.from('test content'),
-      fileName: 'test.txt',
-      mimeType: 'text/plain'
-    });
-    cy.get('.file-name').should('contain', 'test.txt');
+      fileName: 'first.jpg',
+      mimeType: 'image/jpeg'
+    }, { force: true });
+
+    cy.get('.file-name').should('contain', 'first.jpg');
+
+    cy.get('.change-button').click();
+    cy.get('input[type="file"]').selectFile({
+      contents: Cypress.Buffer.from('new content'),
+      fileName: 'second.jpg',
+      mimeType: 'image/jpeg'
+    }, { force: true });
+
+    cy.get('.file-name').should('contain', 'second.jpg');
+  });
+
+  it('should allow optional password field', () => {
+    cy.get('input[type="password"]').should('not.have.attr', 'required');
+    cy.get('input[type="password"]').type('test123');
+    cy.get('input[type="password"]').should('have.value', 'test123');
+  });
+
+  it('should allow selecting expiration duration', () => {
+    cy.get('select').select('Une semaine');
+    cy.get('select').should('have.value', '7');
+
+    cy.get('select').select('Deux jours');
+    cy.get('select').should('have.value', '2');
   });
 });

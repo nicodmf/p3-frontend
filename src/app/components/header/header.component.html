@@ -1,13 +1,60 @@
-<header class="header">
+<header class="header" [class.header-with-sidebar]="hasSidebar">
   <div class="header-content">
-    <div class="logo">
+    <!-- Logo visible si non connecté OU si connecté sans sidebar -->
+    <div class="logo" *ngIf="!(isLoggedIn$ | async) || ((isLoggedIn$ | async) && !hasSidebar)">
       <a routerLink="/" class="logo-link">
         <h1>DataShare</h1>
       </a>
     </div>
+
+    <!-- Mobile: Hamburger + User info visible uniquement si connecté -->
+    <div class="mobile-controls" *ngIf="isLoggedIn$ | async">
+      <button class="hamburger-btn" *ngIf="hasSidebar" (click)="onToggleSidebar()">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <div class="user-menu">
+        <button class="user-button" (click)="toggleUserMenu()">
+          <div class="user-avatar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="user-email">{{ userEmail$ | async }}</span>
+        </button>
+
+        <div class="user-dropdown" *ngIf="isUserMenuOpen">
+          <button class="dropdown-item" (click)="logout()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 17L21 12L16 7" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 12H9" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Déconnexion
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
     <nav class="nav">
-      <a *ngIf="!isLoggedIn" routerLink="/login" class="login-btn">Se connecter</a>
-      <a *ngIf="isLoggedIn" routerLink="/history" class="login-btn">Mon espace</a>
+      <!-- Non connecté -->
+      <a *ngIf="!(isLoggedIn$ | async)" routerLink="/login" class="login-btn">Se connecter</a>
+
+      <!-- Connecté - Desktop only -->
+      <div class="desktop-nav" *ngIf="isLoggedIn$ | async">
+        <!-- Page sans sidebar (Upload) : afficher "Mon espace" -->
+        <a *ngIf="!hasSidebar" routerLink="/history" class="nav-link">Mon espace</a>
+
+        <!-- Page avec sidebar (History) : afficher "Ajouter des fichiers" + "Déconnexion" -->
+        <ng-container *ngIf="hasSidebar">
+          <a routerLink="/upload" class="nav-link">Ajouter des fichiers</a>
+          <button class="logout-btn" (click)="logout()">Déconnexion</button>
+        </ng-container>
+      </div>
     </nav>
   </div>
 </header>

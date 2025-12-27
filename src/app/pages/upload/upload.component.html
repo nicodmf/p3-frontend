@@ -1,61 +1,74 @@
 <div class="upload-container">
   <div class="upload-card">
     <div class="upload-header">
-      <h2 class="title">Téléverser un fichier</h2>
+      <h2 class="title">Ajouter un fichier</h2>
     </div>
 
     <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="upload-form">
-      <div class="form-group">
-        <label for="file">Fichier</label>
-        <input
-          id="file"
-          type="file"
-          (change)="onFileSelected($event)"
-          class="form-input file-input"
-          [class.error]="!selectedFile && uploadForm.get('title')?.touched"
-        />
-        <div class="error-message" *ngIf="!selectedFile && uploadForm.get('title')?.touched">
+      <input
+        id="file"
+        type="file"
+        (change)="onFileSelected($event)"
+        style="display: none"
+      />
+
+      <div class="file-selector" *ngIf="!selectedFile" (click)="triggerFileInput()">
+        <label class="file-label">Fichier</label>
+        <div class="file-input-placeholder">
+          <button type="button" class="file-button">Choisir un fichier</button>
+          <span class="file-text">Aucun fichier choisi</span>
+        </div>
+        <div class="error-message" *ngIf="!selectedFile">
           <span>Veuillez sélectionner un fichier</span>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="title">Titre</label>
-        <input
-          id="title"
-          type="text"
-          formControlName="title"
-          placeholder="Saisissez le titre du fichier"
-          class="form-input"
-          [class.error]="uploadForm.get('title')?.invalid && uploadForm.get('title')?.touched"
-        />
-        <div class="error-message" *ngIf="uploadForm.get('title')?.invalid && uploadForm.get('title')?.touched">
-          <span *ngIf="uploadForm.get('title')?.errors?.['required']">Le titre est requis</span>
+      <div class="file-selected" *ngIf="selectedFile">
+        <div class="file-info-display">
+          <div class="file-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="file-details">
+            <div class="file-name">{{ selectedFileName }}</div>
+            <div class="file-size">{{ selectedFileSize }}</div>
+          </div>
+          <button type="button" class="change-button" (click)="triggerFileInput()">Changer</button>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="description">Description (optionnel)</label>
-        <textarea
-          id="description"
-          formControlName="description"
-          placeholder="Saisissez une description"
-          class="form-input"
-          rows="4"
-        ></textarea>
-      </div>
+      <app-input
+        label="Mot de passe"
+        type="password"
+        formControlName="password"
+        placeholder="Optionnel">
+      </app-input>
 
-      <div class="alert alert-error" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </div>
+      <app-select
+        label="Expiration"
+        formControlName="expirationDays"
+        [options]="expirationOptions"
+        placeholder="Sélectionnez une durée"
+        [errorMessage]="getErrorMessage('expirationDays')">
+      </app-select>
 
-      <div class="alert alert-success" *ngIf="successMessage">
-        {{ successMessage }}
-      </div>
+      <app-callout type="error" [message]="errorMessage" *ngIf="errorMessage"></app-callout>
 
-      <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || !selectedFile || isLoading">
-        <span class="btn-text">{{ isLoading ? 'Upload en cours...' : 'Téléverser' }}</span>
-      </button>
+      <app-callout type="success" [message]="successMessage" *ngIf="successMessage"></app-callout>
+
+      <app-button
+        type="submit"
+        variant="primary"
+        [label]="''"
+        [disabled]="uploadForm.invalid || !selectedFile || isLoading"
+        [fullWidth]="true">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+          <app-icon name="upload" style="width: 18px; height: 18px;"></app-icon>
+          <span>{{ isLoading ? 'Upload en cours...' : 'Téléverser' }}</span>
+        </div>
+      </app-button>
     </form>
   </div>
 </div>

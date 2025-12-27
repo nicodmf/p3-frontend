@@ -5,65 +5,43 @@
     </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="Saisissez votre email"
-          class="form-input"
-          [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-        />
-        <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-          <span *ngIf="registerForm.get('email')?.errors?.['required']">L'email est requis</span>
-          <span *ngIf="registerForm.get('email')?.errors?.['email']">Format d'email invalide</span>
-        </div>
-      </div>
+      <app-input
+        label="Email"
+        type="email"
+        formControlName="email"
+        placeholder="Saisissez votre email"
+        [errorMessage]="getErrorMessage('email')">
+      </app-input>
 
-      <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          placeholder="Saisissez votre mot de passe"
-          class="form-input"
-          [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-        />
-        <div class="error-message" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-          <span *ngIf="registerForm.get('password')?.errors?.['required']">Le mot de passe est requis</span>
-          <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Minimum 8 caractères</span>
-        </div>
-      </div>
+      <app-input
+        label="Mot de passe"
+        type="password"
+        formControlName="password"
+        placeholder="Saisissez votre mot de passe"
+        [errorMessage]="getErrorMessage('password')">
+      </app-input>
 
-      <div class="form-group">
-        <label for="confirmPassword">Vérification du mot de passe</label>
-        <input
-          id="confirmPassword"
-          type="password"
-          formControlName="confirmPassword"
-          placeholder="Saisissez le à nouveau"
-          class="form-input"
-          [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
-        />
-        <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
-          <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">La vérification du mot de passe est requise</span>
-          <span *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">Les mots de passe ne correspondent pas</span>
-        </div>
-      </div>
+      <app-input
+        label="Vérification du mot de passe"
+        type="password"
+        formControlName="confirmPassword"
+        placeholder="Saisissez le à nouveau"
+        [errorMessage]="getErrorMessage('confirmPassword')">
+      </app-input>
 
-      <div class="alert alert-error" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </div>
+      <app-callout type="error" [message]="errorMessage" *ngIf="errorMessage"></app-callout>
 
       <p class="register-footer">
         <a routerLink="/login" class="link">J'ai déjà un compte</a>
       </p>
 
-      <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || isLoading">
-        <span class="btn-text">{{ isLoading ? 'Création en cours...' : 'Créer mon compte' }}</span>
-      </button>
+      <app-button
+        type="submit"
+        variant="primary"
+        [label]="isLoading ? 'Création en cours...' : 'Créer mon compte'"
+        [disabled]="registerForm.invalid || isLoading"
+        [fullWidth]="true">
+      </app-button>
     </form>
   </div>
 </div>
