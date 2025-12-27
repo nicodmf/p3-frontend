@@ -66,4 +66,18 @@ export class HistoryComponent implements OnInit {
     });
   }
 
+  deleteFile(id: string): void {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce fichier ?')) {
+      return;
+    }
+
+    this.historyService.deleteFile(id).subscribe({
+      next: () => {
+        this.files = this.files.filter(file => file.id !== id);
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Erreur lors de la suppression';
+      }
+    });
+  }
 }
