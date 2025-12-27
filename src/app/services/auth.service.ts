@@ -24,6 +24,15 @@ export class AuthService {
       );
   }
 
+  login(request: RegisterRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.API_URL}/login`, request)
+      .pipe(
+        tap(response => {
+          this.setSession(response);
+        })
+      );
+  }
+
   isAuthenticated(): boolean {
     const token = localStorage.getItem('accessToken');
     if (!token) return false;
