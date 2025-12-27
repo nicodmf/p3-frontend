@@ -17,7 +17,7 @@ export interface UploadResponse {
   providedIn: 'root'
 })
 export class UploadService {
-  private readonly API_URL = 'http://localhost:5000/api/files';
+  private readonly API_URL = '/api/files';
 
   constructor(
     private http: HttpClient,

@@ -65,6 +65,24 @@ npm run e2e
 npm run build
 ```
 
+## Configuration
+
+### Proxy CORS
+
+L'application utilise un proxy pour éviter les erreurs CORS lors des appels API en développement.
+
+**Backend API** : http://localhost:5080
+
+**Commandes** :
+- `npm start` - Lance avec proxy (développement)
+- `npm run start:no-proxy` - Lance sans proxy (production)
+
+**Fonctionnement** :
+- Les requêtes vers `/api/*` sont automatiquement redirigées vers `http://localhost:5080/*`
+- Aucune configuration supplémentaire requise
+
+Pour plus de détails, consultez [PROXY.md](PROXY.md).
+
 ## Architecture
 
 ### Structure des dossiers

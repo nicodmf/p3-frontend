@@ -4,14 +4,18 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:no-proxy": "ng serve --configuration production",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "e2e": "cypress open",
-    "e2e:run": "cypress run"
+    "e2e:run": "cypress run",
+    "storybook": "ng run frontend:storybook",
+    "build-storybook": "ng run frontend:build-storybook"
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^19.2.17",
     "@angular/common": "^19.2.0",
     "@angular/compiler": "^19.2.0",
     "@angular/core": "^19.2.0",
@@ -19,6 +23,7 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@storybook/builder-webpack5": "^8.6.15",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -27,6 +32,9 @@
     "@angular-devkit/build-angular": "^19.2.19",
     "@angular/cli": "^19.2.19",
     "@angular/compiler-cli": "^19.2.0",
+    "@storybook/addon-essentials": "^7.6.21",
+    "@storybook/addon-interactions": "^7.6.21",
+    "@storybook/angular": "^7.6.21",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
@@ -34,6 +42,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typescript": "~5.7.2"
   }
 }
